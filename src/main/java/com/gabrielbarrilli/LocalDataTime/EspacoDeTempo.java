@@ -1,11 +1,11 @@
-package com.gabrielbarrilli.LocalDataTime.service;
+package com.gabrielbarrilli.LocalDataTime;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class EspacoDeTempo {
-    public void calculaTempo(){
+    /*public void calculaTempo(){
 
         LocalDate dataEntrada = LocalDate.now();
         LocalTime horaEntrada = LocalTime.now();
@@ -22,5 +22,5 @@ public class EspacoDeTempo {
 
         // Exibe o tempo total de permanência
         System.out.println("Tempo total de permanência: " + horas + " horas " + minutos + " minutos e " + segundos + " segundos");
-    }
+    }*/
 }

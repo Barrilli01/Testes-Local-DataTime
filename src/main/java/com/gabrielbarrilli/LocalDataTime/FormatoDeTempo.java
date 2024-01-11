@@ -1,11 +1,11 @@
-package com.gabrielbarrilli.LocalDataTime.service;
+package com.gabrielbarrilli.LocalDataTime;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class FormatoDeTempo {
-
+/*
     public void FormatarTempo() {
         LocalDate dataAtual = LocalDate.now();
         LocalTime horaAtual = LocalTime.now();
@@ -23,5 +23,5 @@ public class FormatoDeTempo {
 
         System.out.println("Hora formatada: " + horaFormatada);
         System.out.println("Data formatada: " + dataFormatada);
-    }
+    } */
 }

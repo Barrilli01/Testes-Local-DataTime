@@ -6,12 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Testes-Local-DataTime" />
+        <module name="LocalDataTIme" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LocalDataTIme" options="-parameters" />
       <module name="Testes-Local-DataTime" options="-parameters" />
     </option>
   </component>
