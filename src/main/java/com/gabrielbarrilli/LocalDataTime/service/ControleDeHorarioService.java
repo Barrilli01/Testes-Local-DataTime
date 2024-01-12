@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -21,9 +22,11 @@ public class ControleDeHorarioService {
         this.controleDeHorarioRepository = controleDeHorarioRepository;
     }
 
-    public List<ControleDeHorario> Teste (){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        return controleDeHorarioRepository.findByDataHoraAtual(localDateTime);
+    public List<ControleDeHorario> findByDataHoraAtual(String buscaData){
+        LocalDateTime dataHoraAtual = LocalDateTime.now();
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String formatoDataString = dataHoraAtual.format(formatoData);
+        return controleDeHorarioRepository.findByDataHoraAtual(formatoDataString);
     }
 
     public ControleDeHorario findById(Long id) {

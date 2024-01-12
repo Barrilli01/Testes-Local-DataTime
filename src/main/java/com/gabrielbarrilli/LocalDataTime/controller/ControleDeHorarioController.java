@@ -2,12 +2,12 @@ package com.gabrielbarrilli.LocalDataTime.controller;
 
 import com.gabrielbarrilli.LocalDataTime.model.ControleDeHorario;
 import com.gabrielbarrilli.LocalDataTime.service.ControleDeHorarioService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -24,8 +24,8 @@ public class ControleDeHorarioController {
     }
 
     @GetMapping("/buscaPorDataAtual")
-    public List<ControleDeHorario> Teste (){
-        return controleDeHorarioService.Teste();
+    public List<ControleDeHorario> findByDataHoraAtual(String buscaData){
+        return controleDeHorarioService.findByDataHoraAtual(buscaData);
     }
     @GetMapping("/findHorarioById/{id}")
     public ControleDeHorario findById(@PathVariable Long id) {
