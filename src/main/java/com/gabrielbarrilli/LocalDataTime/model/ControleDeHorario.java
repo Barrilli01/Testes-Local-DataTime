@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "ch01_saida")
 public class ControleDeHorario {
 
+    // teste
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ch01_codigo_saida")
