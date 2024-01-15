@@ -13,7 +13,7 @@ public class Quarto {
     private Long id;
 
     @Column(name = "ch02_numero")
-    private Integer numero;
+    private Long numero;
 
     @Column(name = "ch02_descricao")
     private String descricao;
@@ -26,14 +26,6 @@ public class Quarto {
         this.id = id;
     }
 
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -42,11 +34,20 @@ public class Quarto {
         this.descricao = descricao;
     }
 
-    public Quarto(Integer numero, String descricao) {
+    public Long getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Long numero) {
+        this.numero = numero;
+    }
+
+    public Quarto(Long numero, String descricao) {
         this.numero = numero;
         this.descricao = descricao;
     }
 
     public Quarto() {
     }
+
 }

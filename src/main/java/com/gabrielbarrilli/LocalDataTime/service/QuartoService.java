@@ -21,7 +21,7 @@ public class QuartoService {
 
     public Quarto create(Quarto quarto) {
         var quartoSalvo = quartoRepository.save(quarto);
-        quartoSalvo.setNumero(quartoSalvo.getId().intValue());
+        quartoSalvo.setNumero(quartoSalvo.getId());
         quartoRepository.save(quartoSalvo);
         return quartoSalvo;
     }

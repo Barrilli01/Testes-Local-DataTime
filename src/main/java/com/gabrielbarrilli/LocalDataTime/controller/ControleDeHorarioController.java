@@ -3,11 +3,11 @@ package com.gabrielbarrilli.LocalDataTime.controller;
 import com.gabrielbarrilli.LocalDataTime.model.ControleDeHorario;
 import com.gabrielbarrilli.LocalDataTime.service.ControleDeHorarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -23,9 +23,14 @@ public class ControleDeHorarioController {
         this.controleDeHorarioService = controleDeHorarioService;
     }
 
-    @GetMapping("/buscaPorDataAtual")
-    public List<ControleDeHorario> findByDataHoraAtual(String buscaData){
-        return controleDeHorarioService.findByDataHoraAtual(buscaData);
+    @GetMapping("/findAllRegistros")
+    public List<ControleDeHorario> findAll(){
+        return controleDeHorarioService.findAll();
+    }
+
+    @GetMapping("/buscaPorDataDigitada")
+    public List<ControleDeHorario> findByData(@DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate buscaData){
+        return controleDeHorarioService.findByData(buscaData);
     }
     @GetMapping("/findHorarioById/{id}")
     public ControleDeHorario findById(@PathVariable Long id) {
@@ -34,13 +39,13 @@ public class ControleDeHorarioController {
 
     @PostMapping("/criarHorario/{idQuarto}")
     public ControleDeHorario create(ControleDeHorario controleDeHorario, @PathVariable Long idQuarto) {
-        controleDeHorario.setDataHoraAtual(LocalDateTime.now());
+        controleDeHorario.setDataEntrada(LocalDate.now());
         return controleDeHorarioService.create(controleDeHorario, idQuarto);
     }
 
-    @PutMapping("/editarHorarioSaida/{idControle}")
-    public ControleDeHorario editarHorarioSaida(@PathVariable Long idControle) {
-        return controleDeHorarioService.editarHorarioSaida(idControle);
+    @PutMapping("/editarSaida/{idControle}")
+    public ControleDeHorario editarSaida(@PathVariable Long idControle) {
+        return controleDeHorarioService.editarSaida(idControle);
     }
 
 }
