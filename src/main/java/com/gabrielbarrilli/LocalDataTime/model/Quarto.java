@@ -1,5 +1,6 @@
 package com.gabrielbarrilli.LocalDataTime.model;
 
+import com.gabrielbarrilli.LocalDataTime.enums.StatusDoQuarto;
 import jakarta.persistence.*;
 
 import javax.print.attribute.standard.MediaSize;
@@ -17,6 +18,9 @@ public class Quarto {
 
     @Column(name = "ch02_descricao")
     private String descricao;
+
+    @Column(name = "ch02_status_do_quarto")
+    StatusDoQuarto statusDoQuarto;
 
     public Long getId() {
         return id;
@@ -42,9 +46,18 @@ public class Quarto {
         this.numero = numero;
     }
 
-    public Quarto(Long numero, String descricao) {
+    public StatusDoQuarto getStatusDoQuarto() {
+        return statusDoQuarto;
+    }
+
+    public void setStatusDoQuarto(StatusDoQuarto statusDoQuarto) {
+        this.statusDoQuarto = statusDoQuarto;
+    }
+
+    public Quarto(Long numero, String descricao, StatusDoQuarto statusDoQuarto) {
         this.numero = numero;
         this.descricao = descricao;
+        this.statusDoQuarto = statusDoQuarto;
     }
 
     public Quarto() {

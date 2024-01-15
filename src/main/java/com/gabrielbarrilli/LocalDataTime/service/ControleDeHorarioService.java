@@ -1,18 +1,17 @@
 package com.gabrielbarrilli.LocalDataTime.service;
 
+import com.gabrielbarrilli.LocalDataTime.enums.StatusDoQuarto;
 import com.gabrielbarrilli.LocalDataTime.model.ControleDeHorario;
 import com.gabrielbarrilli.LocalDataTime.repository.ControleDeHorarioRepository;
 import com.gabrielbarrilli.LocalDataTime.repository.QuartoRepository;
+import com.gabrielbarrilli.LocalDataTime.response.ControleDeHorarioResponse;
+import com.gabrielbarrilli.LocalDataTime.response.HorarioResponse;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.cglib.core.Local;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -35,55 +34,68 @@ public class ControleDeHorarioService {
         return controleDeHorarioRepository.findByDataEntrada(buscaData);
     }
 
-    public ControleDeHorario findById(Long id) {
-        return controleDeHorarioRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("controle nao encontrado"));
+    public ControleDeHorarioResponse findById(Long id) {
+        var porId = controleDeHorarioRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("controle nao encontrado"));
+        return new ControleDeHorarioResponse(
+                porId.getId(),
+                porId.getDataHoraEntrada(),
+                porId.getDataHoraSaida(),
+                porId.getQuarto().getNumero(),
+                porId.getPlaca(),
+                calculoPermanencia(id)
+                );
     }
 
     public ControleDeHorario create(ControleDeHorario controleDeHorario, Long idQuarto) {
         var quarto = quartoRepository.findById(idQuarto).orElseThrow(()-> new EntityNotFoundException("Quarto inexistente, não foi possível criar horário"));
-        controleDeHorario.setQuarto(quarto);
 
-        LocalDate dataAtual = LocalDate.now();
-        controleDeHorario.setDataEntrada(dataAtual);
+        if(quarto.getStatusDoQuarto() == StatusDoQuarto.DISPONIVEL) {
 
-        LocalTime agora = LocalTime.now();
-        DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String horaFormatada = agora.format(horaFormatter);
-        LocalTime horaLocal = LocalTime.parse(horaFormatada, horaFormatter);
-        controleDeHorario.setHoraEntrada(horaLocal);
+            controleDeHorario.setQuarto(quarto);
+            quarto.setStatusDoQuarto(StatusDoQuarto.OCUPADO);
+
+            controleDeHorario.setDataEntrada(LocalDate.now());
+
+            controleDeHorario.setDataHoraEntrada(LocalDateTime.now());
+
+        } else {
+            throw new EntityNotFoundException("O quarto está ocupado!");
+        }
 
         return controleDeHorarioRepository.save(controleDeHorario);
     }
 
     public ControleDeHorario editarSaida(Long idControle) {
         var controle = controleDeHorarioRepository.findById(idControle).orElseThrow(()-> new EntityNotFoundException("Controle de horário inexistente"));
+        var quarto = quartoRepository.findById(controle.getQuarto().getId()).orElseThrow(()-> new EntityNotFoundException("Quarto não identificado"));
 
-        LocalTime agora = LocalTime.now();
-        DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String horaFormatada = agora.format(horaFormatter);
-        LocalTime horaLocal = LocalTime.parse(horaFormatada, horaFormatter);
-        controle.setHoraSaida(horaLocal);
+        var statusqto = controle.getQuarto().getStatusDoQuarto();
 
-        controle.setDataSaida(LocalDate.now());
+        if (statusqto == StatusDoQuarto.OCUPADO) {
+            quarto.setStatusDoQuarto(StatusDoQuarto.DISPONIVEL);
 
-        calculoPermanencia(idControle);
+            controle.setDataHoraSaida(LocalDateTime.now());
 
+            calculoPermanencia(idControle);
+        } else {
+            System.out.println("O Quarto não está ocupado!");
+        }
         return controleDeHorarioRepository.save(controle);
     }
 
-    public void calculoPermanencia(Long idControle){
+    public HorarioResponse calculoPermanencia(Long idControle){
 
         var controle = controleDeHorarioRepository.findById(idControle).orElseThrow(()-> new EntityNotFoundException("não achou id para calcular"));
 
-        if(controle.getDataEntrada()  != null && controle.getHoraEntrada() != null) {
-            Duration duracao = Duration.between(controle.getDataEntrada().atTime(controle.getHoraEntrada()), controle.getDataSaida().atTime(controle.getHoraSaida()));
-            long horas = duracao.toHours();
-            long minutos = duracao.toMinutes() % 60;
-            long segundos = duracao.toSeconds() % 60;
-            String permanencia = ("permaneceu " + horas + " horas " + minutos + " minutos e " + segundos + " segundos");
-            controle.setTempoPermanencia(permanencia);
-        } else {
-            System.out.println("Horário de saída já definido!");
-        }
+        LocalDateTime localTimeEntrada = controle.getDataHoraEntrada();
+        LocalDateTime localTimeSaida = controle.getDataHoraSaida();
+
+        var duration = Duration.between(localTimeEntrada, localTimeSaida);
+
+        long horas = duration.toHours();
+        long minutos = duration.toMinutes() % 60;
+        long segundos = duration.toSeconds() % 60;
+
+        return new HorarioResponse(horas, minutos, segundos);
     }
 }

@@ -1,13 +1,14 @@
 package com.gabrielbarrilli.LocalDataTime.controller;
 
 import com.gabrielbarrilli.LocalDataTime.model.ControleDeHorario;
+import com.gabrielbarrilli.LocalDataTime.response.ControleDeHorarioResponse;
 import com.gabrielbarrilli.LocalDataTime.service.ControleDeHorarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -29,17 +30,17 @@ public class ControleDeHorarioController {
     }
 
     @GetMapping("/buscaPorDataDigitada")
-    public List<ControleDeHorario> findByData(@DateTimeFormat(pattern = "yyyy/MM/dd") LocalDate buscaData){
+    public List<ControleDeHorario> findByData(LocalDate buscaData){
         return controleDeHorarioService.findByData(buscaData);
     }
+
     @GetMapping("/findHorarioById/{id}")
-    public ControleDeHorario findById(@PathVariable Long id) {
+    public ControleDeHorarioResponse findById(@PathVariable Long id) {
         return controleDeHorarioService.findById(id);
     }
 
     @PostMapping("/criarHorario/{idQuarto}")
     public ControleDeHorario create(ControleDeHorario controleDeHorario, @PathVariable Long idQuarto) {
-        controleDeHorario.setDataEntrada(LocalDate.now());
         return controleDeHorarioService.create(controleDeHorario, idQuarto);
     }
 

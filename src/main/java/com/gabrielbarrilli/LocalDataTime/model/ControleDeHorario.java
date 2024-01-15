@@ -16,20 +16,13 @@ public class ControleDeHorario {
     @Column(name = "ch01_codigo_saida")
     private Long id;
 
-    @Column(name = "ch01_data_entrada")
     private LocalDate dataEntrada;
 
-    @Column(name = "ch01_hora_entrada")
-    private LocalTime horaEntrada;
+    @Column(name = "ch01_data_hora_entrada")
+    private LocalDateTime dataHoraEntrada;
 
-    @Column(name = "ch01_data_saida")
-    private LocalDate dataSaida;
-
-    @Column(name = "ch01_hora_saida")
-    private LocalTime horaSaida;
-
-    @Column(name = "ch01_tempo_permanencia")
-    private String tempoPermanencia;
+    @Column(name = "ch01_data_hora_saida")
+    private LocalDateTime dataHoraSaida;
 
     @ManyToOne
     @JoinColumn(name = "fkch01ch02_codigo_quarto")
@@ -54,36 +47,20 @@ public class ControleDeHorario {
         this.dataEntrada = dataEntrada;
     }
 
-    public LocalTime getHoraEntrada() {
-        return horaEntrada;
+    public LocalDateTime getDataHoraEntrada() {
+        return dataHoraEntrada;
     }
 
-    public void setHoraEntrada(LocalTime horaEntrada) {
-        this.horaEntrada = horaEntrada;
+    public void setDataHoraEntrada(LocalDateTime dataHoraEntrada) {
+        this.dataHoraEntrada = dataHoraEntrada;
     }
 
-    public LocalDate getDataSaida() {
-        return dataSaida;
+    public LocalDateTime getDataHoraSaida() {
+        return dataHoraSaida;
     }
 
-    public void setDataSaida(LocalDate dataSaida) {
-        this.dataSaida = dataSaida;
-    }
-
-    public LocalTime getHoraSaida() {
-        return horaSaida;
-    }
-
-    public void setHoraSaida(LocalTime horaSaida) {
-        this.horaSaida = horaSaida;
-    }
-
-    public String getTempoPermanencia() {
-        return tempoPermanencia;
-    }
-
-    public void setTempoPermanencia(String tempoPermanencia) {
-        this.tempoPermanencia = tempoPermanencia;
+    public void setDataHoraSaida(LocalDateTime dataHoraSaida) {
+        this.dataHoraSaida = dataHoraSaida;
     }
 
     public String getPlaca() {
@@ -102,12 +79,10 @@ public class ControleDeHorario {
         this.quarto = quarto;
     }
 
-    public ControleDeHorario(LocalDate dataEntrada, LocalTime horaEntrada, LocalDate dataSaida, LocalTime horaSaida, String tempoPermanencia, Quarto quarto, String placa) {
+    public ControleDeHorario(LocalDate dataEntrada, LocalDateTime dataHoraEntrada, LocalDateTime dataHoraSaida, Quarto quarto, String placa) {
         this.dataEntrada = dataEntrada;
-        this.horaEntrada = horaEntrada;
-        this.dataSaida = dataSaida;
-        this.horaSaida = horaSaida;
-        this.tempoPermanencia = tempoPermanencia;
+        this.dataHoraEntrada = dataHoraEntrada;
+        this.dataHoraSaida = dataHoraSaida;
         this.quarto = quarto;
         this.placa = placa;
     }
